@@ -1,0 +1,40 @@
+.contenedor{
+    width: 40%;
+    margin: auto;
+    padding: 10px;
+    border: 1px solid rgba(169, 168, 168, 0.357);
+    border-radius: 0px;
+}
+
+.m-3{
+    width: 24rem;
+    background-color: rgba(230, 249, 249, 0.577);
+    border-radius: 0px;
+}
+
+.imagen{
+    height: 200px;
+    width: 250px;
+}
+
+.envio{
+    color: red;
+    margin-top: 20px;
+}
+
+.precio{
+    font-weight: bold;
+}
+
+.category{
+    font-weight: bold;
+    font-size: 15px;
+    color: darkblue;
+}
+
+.desc{
+    text-align: center;
+}
+
+
+

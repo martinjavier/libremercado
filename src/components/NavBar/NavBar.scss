@@ -1,0 +1,41 @@
+.marca {
+  font-size: 50px;
+  color: blue;
+  font-weight: 800;
+}
+
+header{
+  background-image: linear-gradient(lightblue, white, lightblue); 
+  display: flex;
+  justify-content: space-between; 
+  padding: 12px 3%;
+  font-size: 25px;
+  color: blue;
+}
+
+.NavLink{
+  margin-left: 10px;
+  text-decoration: none;
+  color: black;
+}
+
+.activeLink{
+  border: 2px rgb(249, 157, 168) solid;
+  border-radius: 25px;
+}
+
+nav{
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: black;
+}
+
+a{
+  color: darkblue;
+  font-weight: 700;
+  font-size: 30px;
+  text-decoration: none;
+  padding: 10px;
+}
