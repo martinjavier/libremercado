@@ -45,6 +45,5 @@ export const CartScreen = () => {
                     </>
             } 
         </div>
-
     )
 }
