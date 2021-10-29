@@ -16,5 +16,6 @@ export const ClickTracker = () => {
             <h3>FyH: {counter > 0 ? new Date().toLocaleString() : "No hay clicks aún"}</h3>
         </div>
     )
+    
 
 }
