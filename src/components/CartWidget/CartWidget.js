@@ -8,7 +8,9 @@ export const CartWidget = () => {
   const { calcularCantidad } = useContext(CartContext)
 
     return (
-          <div>
+      <div style={{
+        visibility: calcularCantidad() === 0 ? "hidden" : "visible"
+      }}>
             <FaShoppingCart className="widget"/>
             <span>{calcularCantidad()}</span>
           </div>             

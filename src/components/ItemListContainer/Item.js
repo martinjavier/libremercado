@@ -10,7 +10,7 @@ export const Item = ( {id, name, price, img, description, category} ) => {
         <Card style={{width: '18rem'}} className="m-3">
             <Card.Img className="imagen" variant="top" src={img} />
             <Card.Body>
-                <Card.Title clasName="nombre">{name}</Card.Title>
+                <Card.Text className="nombre">{name}</Card.Text>
                 <Card.Text className="desc">{description}</Card.Text>
                 <Card.Text className="precio">Precio: ${price}</Card.Text>
                 <Card.Text className="categoria">Categoria: {category}</Card.Text>

@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { BsFillTrashFill } from 'react-icons/bs'
-import { Link } from 'react-router-dom'
+import { Redirect } from 'react-router-dom'
 import { CartContext } from '../../context/CartContext'
 import './CartScreen.scss'
 
@@ -13,8 +13,7 @@ export const CartScreen = () => {
             {
                 carrito.length === 0
                 ? <>
-                    <h2>No hay productos agregados</h2>
-                    <Link to="/" className="btn btn-success">Ir a comprar</Link>
+                    <Redirect to="/" />
                  </>
                 :
                     <>
@@ -23,7 +22,7 @@ export const CartScreen = () => {
 
                         {
                             carrito.map( (prod) => (
-                                <div className="itemCarrito">
+                                <div key={Math.random()} className="itemCarrito">
                                     <p className="itemTitulo">{prod.name}</p>
                                     <p>Cantidad: {prod.cantidad}</p>
                                     <p>Precio: {prod.price * prod.cantidad}</p>

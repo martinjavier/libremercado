@@ -16,7 +16,7 @@ export const ItemCount = ( {cantidad, modify, max} ) => {
     }
 
     return (
-        <div clasName="contador">
+        <div className="contador">
             <button onClick={handleRestar} className="btn btn-primary">-</button>
 
             <span className="mx-2">{cantidad}</span>
