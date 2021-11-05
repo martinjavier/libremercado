@@ -10,6 +10,7 @@ import { UIProvider } from './context/UIContext';
 import { UserAuthContext } from './context/UserAuthContext';
 import { useContext } from 'react';
 import { UserAuthenticate } from './components/UserAuthenticate/UserAuthenticate';
+import { Checkout } from './components/Checkout/Checkout';
 
 function App() {
 
@@ -45,6 +46,10 @@ function App() {
 
                 <Route exact path="/cart">
                   <CartScreen/>
+                </Route>
+
+                <Route exact path="/checkout">
+                  <Checkout/>
                 </Route>
 
                 <Route path="*">

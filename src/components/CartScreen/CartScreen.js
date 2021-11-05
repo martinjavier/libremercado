@@ -1,6 +1,6 @@
 import React, { useContext } from 'react'
 import { BsFillTrashFill } from 'react-icons/bs'
-import { Redirect } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { CartContext } from '../../context/CartContext'
 import './CartScreen.scss'
 
@@ -35,12 +35,12 @@ export const CartScreen = () => {
 
                         <hr/>
                         <h3 className="my-3">Precio total: ${calcularTotal()}</h3>
-                        <button
-                            className="btn btn-danger"
-                            onClick={vaciarCarrito}
-                        >
+                        <button className="btn btn-danger" onClick={vaciarCarrito}>
                             Vaciar carrito
                         </button>
+                        <Link className="btn btn-success mx-3" to="/checkout">
+                            Terminar Mi Compra
+                        </Link>
                     </>
             } 
         </div>
