@@ -11,7 +11,6 @@ export const ItemList = ( {productos = []} ) => {
 
             <div className="row">
                 { productos.map((item) => <Item {...item} key={item.id}/> )}
-                {/* { productos.map((item) => <Item item={item}/> )} */}
             </div>
         </div>
     )

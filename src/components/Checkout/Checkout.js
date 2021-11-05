@@ -1,14 +1,19 @@
 import React, {useState, useContext} from 'react'
+import { Redirect } from 'react-router'
 import { CartContext } from '../../context/CartContext'
 import './Checkout.scss'
 import Swal from 'sweetalert2'
 import { getFirestore } from '../../firebase/config'
 import firebase from 'firebase'
 import 'firebase/firestore';
+import { Loader } from '../Loader/Loader'
+import { UIContext } from '../../context/UIContext'
 
 export const Checkout = () => {
 
-    const {carrito, calcularTotal} = useContext(CartContext)
+    const {loading, setLoading} = useContext(UIContext)
+
+    const {carrito, calcularTotal, vaciarCarrito} = useContext(CartContext)
 
     const [values, setValues] = useState({
         nombre: '',
@@ -61,7 +66,7 @@ export const Checkout = () => {
             buyer: {
                 ...values
             },
-            items: carrito,
+            items: carrito.map((el) => ({id: el.id, precio: el.price, cantidad: el.cantidad})),
             total: calcularTotal(),
             date: firebase.firestore.Timestamp.fromDate(new Date())
         }
@@ -70,11 +75,40 @@ export const Checkout = () => {
 
         // Creo la conexión
         const db = getFirestore();
-        // Referencio mi colección
+        // Referencio mi colección orders o la creo si no existe
         const orders = db.collection('orders');
-
+        // Configuro setLoading
+        setLoading(true)
+        // Agrego la orden a la colección
         orders.add(orden)
-            .then((res) => console.log(res.id))
+            .then((res) => {
+                Swal.fire({
+                    icon: 'success',
+                    type:'success',
+                    title:'Su compra ha sido registrada',
+                    html: 'Operación <strong>'+res.id+'</strong> realizada'
+                  })
+                vaciarCarrito()
+            }).catch(err => {
+                Swal.fire({
+                    icon: 'error',
+                    type:'error',
+                    title:'Error Inesperado',
+                    text: `${err}`
+                  })
+            }).finally(() => {
+                setLoading(false)
+            })   
+            
+            carrito.forEach((item) => {
+                const docRef = db.collection('productos').doc(item.id)
+                docRef.get()
+                    .then((doc) => {
+                        docRef.update({
+                            stock: doc.data().stock - item.cantidad
+                        })
+                })
+            })
 
     }
 
@@ -87,9 +121,11 @@ export const Checkout = () => {
 
     return (
         <>
+        {carrito.length === 0 && <Redirect to="/" />}
 
-        <div className="contenedor">
-        <div className="container">
+        {loading && <Loader/>}
+
+        <div className="container angosto">
             <hr/>
             <h2>Complete Sus Datos</h2>
             <hr/>
@@ -127,11 +163,9 @@ export const Checkout = () => {
                     value={values.tel}
                     onChange={handleInputChange}
                 />
-                <button className="btn btn-success" type="submit">Finalizar</button>
+                <button className="btn btn-success" type="submit" disabled={loading}>Finalizar</button>
             </form>
         </div>
-        </div>
-
         </>
     )
 }
