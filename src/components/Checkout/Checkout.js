@@ -22,13 +22,19 @@ export const Checkout = () => {
         tel: ''
     })
 
-    const handleSubmit = (e) => {
+    const handleInputChange = (e) => {
+        setValues({
+            ...values,
+            [e.target.name]: e.target.value
+        })
+    }
+
+    const handleSubmit = async (e) => {
         e.preventDefault()
 
         if (values.nombre.length < 1) {
             Swal.fire({
                 icon: 'error',
-                type:'error',
                 title:'Nombre Inválido'
             })
             return
@@ -37,7 +43,6 @@ export const Checkout = () => {
         if (values.apellido.length < 1) {
             Swal.fire({
                 icon: 'error',
-                type:'error',
                 title:'Apellido Inválido'
             })
             return
@@ -46,7 +51,6 @@ export const Checkout = () => {
         if (values.email.length < 1) {
             Swal.fire({
                 icon: 'error',
-                type:'error',
                 title:'EMail Inválido'
             })
             return
@@ -71,52 +75,65 @@ export const Checkout = () => {
             date: firebase.firestore.Timestamp.fromDate(new Date())
         }
 
-        // Enviar esta orden a Firebase
+        // Firebase, Armo un Batch de actualización
 
         // Creo la conexión
         const db = getFirestore();
+
         // Referencio mi colección orders o la creo si no existe
         const orders = db.collection('orders');
-        // Configuro setLoading
-        setLoading(true)
-        // Agrego la orden a la colección
-        orders.add(orden)
-            .then((res) => {
-                Swal.fire({
-                    icon: 'success',
-                    type:'success',
-                    title:'Su compra ha sido registrada',
-                    html: 'Operación <strong>'+res.id+'</strong> realizada'
-                  })
-                vaciarCarrito()
-            }).catch(err => {
-                Swal.fire({
-                    icon: 'error',
-                    type:'error',
-                    title:'Error Inesperado',
-                    text: `${err}`
-                  })
-            }).finally(() => {
-                setLoading(false)
-            })   
-            
-            carrito.forEach((item) => {
-                const docRef = db.collection('productos').doc(item.id)
-                docRef.get()
-                    .then((doc) => {
-                        docRef.update({
-                            stock: doc.data().stock - item.cantidad
-                        })
-                })
-            })
 
-    }
+        const itemsToUpdate = db.collection('productos')
+            .where(firebase.firestore.FieldPath.documentId(), 'in', carrito.map(el => el.id))
+        
+        const query = await itemsToUpdate.get()
+        const batch = db.batch()
+        const outOfStock = []
 
-    const handleInputChange = (e) => {
-        setValues({
-            ...values,
-            [e.target.name]: e.target.value
+        query.docs.forEach((doc) => {
+            const itemInCart = carrito.find(prod => prod.id === doc.id)
+
+            if (doc.data().stock >= itemInCart.cantidad)
+            {
+                batch.update(doc.ref, {stock: doc.data().stock - itemInCart.cantidad})
+            } else {
+                outOfStock.push({...doc.data(), id: doc.id})
+            }
         })
+
+        if (outOfStock.length === 0){
+
+            // Configuro setLoading
+            setLoading(true)
+
+            // Agrego la orden a la colección
+            orders.add(orden)
+                .then((res) => {
+                    
+                    batch.commit()
+
+                    Swal.fire({
+                        icon: 'success',
+                        title:'Su compra ha sido registrada',
+                        html: 'Operación <strong>'+res.id+'</strong> realizada'
+                    })
+                    vaciarCarrito()
+                }).catch(err => {
+                    Swal.fire({
+                        icon: 'error',
+                        title:'Error Inesperado',
+                        text: `${err}`
+                    })
+                }).finally(() => {
+                    setLoading(false)
+                })  
+        } else {
+            Swal.fire({
+                icon: 'error',
+                title: "Falta de Productos",
+                text: outOfStock.map(el => el.name).join(', ')
+              })
+        }
     }
 
     return (

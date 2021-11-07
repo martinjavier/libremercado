@@ -26,6 +26,12 @@
     font-weight: bold;
 }
 
+.cantidad{
+    font-weight: bold;
+    font-size: 15px;
+    color: red;
+}
+
 .category{
     font-weight: bold;
     font-size: 15px;
