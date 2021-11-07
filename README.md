@@ -10,10 +10,10 @@ https://github.com/martinjavier/libremercado
 ### Pre-requisitos 📋
 
 Instalar:
-Visual Studio Code,
-Node JS,
-React,
-Boostrap
+Visual Studio Code v 1.62.0
+Node JS v 14.17.6
+React v 17.0.2
+Boostrap v 2.0.0
 
 ### Instalación 🔧
 ## Ejecutando las pruebas ⚙️
@@ -21,6 +21,8 @@ Boostrap
 Seleccionar un producto del catalogo,
 Pulsar el botón Comprar,
 Verificar que el item haya sido agregado al carrito
+Ingresar los datos del usuario
+Confirmar la compra
 
 ## Construido con 🛠️
 
