@@ -16,14 +16,14 @@ export const NavBar = () => {
           <h1 className="marca">Libre Mercado</h1>
           <div>
               <nav>
-              <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/">Inicio</NavLink>
-              <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/productos/Zapatos">Zapatos</NavLink>
-              <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/productos/Electrónica">Electrónica</NavLink>  
-              <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/productos/Hogar">Hogar</NavLink>  
-              <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/productos/Arte">Arte</NavLink>  
-              <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/productos/Electricidad">Electricidad</NavLink> 
-              <Link to="/cart"><CartWidget/></Link>
-                  { !isAuthenticated || <button onClick={handlesubmit} > Logout</button> }                  
+                <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/">Inicio</NavLink>
+                <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/productos/Zapatos">Zapatos</NavLink>
+                <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/productos/Electrónica">Electrónica</NavLink>  
+                <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/productos/Hogar">Hogar</NavLink>  
+                <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/productos/Arte">Arte</NavLink>  
+                <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/productos/Electricidad">Electricidad</NavLink> 
+                <Link to="/cart"><CartWidget/></Link>
+                    { !isAuthenticated || <button onClick={handlesubmit} > Logout</button> }                  
               </nav>
           </div>
       </header>

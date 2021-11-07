@@ -3,11 +3,10 @@ import { Redirect } from 'react-router'
 import { CartContext } from '../../context/CartContext'
 import './Checkout.scss'
 import Swal from 'sweetalert2'
-import { getFirestore } from '../../firebase/config'
-import firebase from 'firebase'
-import 'firebase/firestore';
 import { Loader } from '../Loader/Loader'
 import { UIContext } from '../../context/UIContext'
+import { generarOrden } from '../../firebase/generarOrden'
+import 'firebase/firestore';
 
 export const Checkout = () => {
 
@@ -29,7 +28,7 @@ export const Checkout = () => {
         })
     }
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = (e) => {
         e.preventDefault()
 
         if (values.nombre.length < 1) {
@@ -65,75 +64,29 @@ export const Checkout = () => {
             return
         }
 
-        // Genero el objeto ORDER
-        const orden = {
-            buyer: {
-                ...values
-            },
-            items: carrito.map((el) => ({id: el.id, precio: el.price, cantidad: el.cantidad})),
-            total: calcularTotal(),
-            date: firebase.firestore.Timestamp.fromDate(new Date())
-        }
-
-        // Firebase, Armo un Batch de actualización
-
-        // Creo la conexión
-        const db = getFirestore();
-
-        // Referencio mi colección orders o la creo si no existe
-        const orders = db.collection('orders');
-
-        const itemsToUpdate = db.collection('productos')
-            .where(firebase.firestore.FieldPath.documentId(), 'in', carrito.map(el => el.id))
-        
-        const query = await itemsToUpdate.get()
-        const batch = db.batch()
-        const outOfStock = []
-
-        query.docs.forEach((doc) => {
-            const itemInCart = carrito.find(prod => prod.id === doc.id)
-
-            if (doc.data().stock >= itemInCart.cantidad)
-            {
-                batch.update(doc.ref, {stock: doc.data().stock - itemInCart.cantidad})
-            } else {
-                outOfStock.push({...doc.data(), id: doc.id})
-            }
-        })
-
-        if (outOfStock.length === 0){
-
-            // Configuro setLoading
-            setLoading(true)
-
-            // Agrego la orden a la colección
-            orders.add(orden)
-                .then((res) => {
-                    
-                    batch.commit()
-
-                    Swal.fire({
-                        icon: 'success',
-                        title:'Su compra ha sido registrada',
-                        html: 'Operación <strong>'+res.id+'</strong> realizada'
-                    })
-                    vaciarCarrito()
-                }).catch(err => {
-                    Swal.fire({
-                        icon: 'error',
-                        title:'Error Inesperado',
-                        text: `${err}`
-                    })
-                }).finally(() => {
-                    setLoading(false)
-                })  
-        } else {
-            Swal.fire({
-                icon: 'error',
-                title: "Falta de Productos",
-                text: outOfStock.map(el => el.name).join(', ')
-              })
-        }
+        setLoading(true)
+ 
+        generarOrden(values, carrito, calcularTotal())
+            .then((res) => {
+                Swal.fire({
+                    icon: 'success',
+                    title:'Su compra ha sido registrada',
+                    html: 'Operación realizada',
+                    willClose: () => {
+                        vaciarCarrito()
+                    }
+                })
+            })
+            .catch((err) => {
+                Swal.fire({
+                    icon: 'error',
+                    title:'Producto Sin Stock',
+                    text: `No hay stock de ${err.map(el => el.name).join(', ')}`
+                })
+            })
+            .finally(() => {
+                setLoading(false)
+            })
     }
 
     return (
