@@ -1,4 +1,4 @@
-.imagen{
+.imagenProducto{
     margin-top: 10px;
     height: 200px;
     width: 250px;
@@ -30,4 +30,38 @@
     font-weight: bold;
     font-size: 15px;
     color: darkblue;
+}
+
+@media only screen and (max-width: 600px){
+
+    .imagenProducto{
+        margin-top: 10px;
+        width: 25%;
+        height: 25%;
+    }
+
+    .nombre{
+        font-size: 15px;
+        font-weight: bold;
+    }
+    
+    .desc{
+        font-size: 15px;
+    }
+    
+    .categoria{
+        font-size: 15px;
+        color: blue;
+    }
+    
+    .category{
+        font-weight: bold;
+        font-size: 15px;
+        color: darkblue;
+    }
+
+    .items{
+        width: '9rem';
+    }
+
 }

@@ -12,9 +12,9 @@ export const NavBar = () => {
       setIsAuthenticated(false);
   }
   return (
-      <header className="header">
+      <header className="cabecera">
           <h1 className="marca">Libre Mercado</h1>
-          <div>
+          <div className="elementos">
               <nav>
                 <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/">Inicio</NavLink>
                 <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/productos/Zapatos">Zapatos</NavLink>
@@ -23,7 +23,7 @@ export const NavBar = () => {
                 <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/productos/Arte">Arte</NavLink>  
                 <NavLink exact className="NavLink" activeClassName={'activeLink'} to="/productos/Electricidad">Electricidad</NavLink> 
                 <Link to="/cart"><CartWidget/></Link>
-                    { !isAuthenticated || <button onClick={handlesubmit} > Logout</button> }                  
+                { !isAuthenticated || <button type="button" class="btn btn-primary" onClick={handlesubmit} > Logout</button> }                  
               </nav>
           </div>
       </header>

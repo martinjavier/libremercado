@@ -9,3 +9,21 @@
 div h2{
     font-size: 40px;
 }
+
+/* Pantallas Pequeñas */
+
+@media only screen and (max-width: 600px){
+
+    .row{
+        margin: 5px;
+    }
+    
+    .container{
+        margin-top: 0px;
+    }
+    
+    div h2{
+        font-size: 10px;
+    }
+
+}
